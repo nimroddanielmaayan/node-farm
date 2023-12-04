@@ -13,6 +13,20 @@
 
 - I have to get used to console.logging things to the command line console instead of to the browser console
 
+- In node.js, every file is automatically a module
+
+- The nodemon package - remember to use it in every node project
+
+- Reminder: Dev dependencies, which are needed only for development but not for production, should be installed with the --save-dev flag. It makes sense to install all the dev dependencies globally, so that we don't have to install them for every project. To install a package globally, we need to use the -g flag
+
+- Reminder: We can't call dev dependencies directly from the command line. We need to use scripts that we define in the package.json file
+
+- A word about version control: NPM package versions look like this: 1.2.3 with the last being bug fixes, the second being minor updates\feature updates, and the first being major version updates. Note, that only major version updates might break our code, and minor updates are always supposed to be backwards compatible. To make sure that we don't get any breaking changes, we can use the ^ symbol before the version number. This is recommended, and it will make sure that we get all the bug fixes and minor updates, but not the major updates. If we want to get all the updates (at our own risk...), we can use the asterix symbol before the version number, or only bug fixes using the ~ symbol (if we want to be extra careful)
+
+- The npm updated command can list all the packages that have updates available
+
+- More info on node version management: https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/
+
 ### Command Prompt
 
 - Node REPL: To enter REPL (Read Evaluate Print Loop), go into the terminal and write "node"
@@ -30,6 +44,8 @@
 - Modules in node are similar to modules in frontend
 
 - See later if the require() syntax is the common way for modules, or import
+
+- It's good practice to first import the core modules, then the third party modules, and then our own modules
 
 ### How Node.js Works
 
@@ -55,4 +71,8 @@
 
 - It's recommended to use a pattern, like {%VARIABLENAME%} in order to mark variables in the HTML that will later be replaced by real time data from the back end
 
--
+### Back End Development - Behind the Scenes
+
+- The first file that is sent from the server to the client is the index.html file. The browser then parses the HTML file, and if it finds any links to other files, it sends additional requests to the server for those files. This continues until all the files are sent
+
+- In the dev tools "network" tab, we can see all the requests that were sent to the server, and also see who initiated the request
