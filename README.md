@@ -1,1 +1,1 @@
-# Node Farm - a basic node.js practice project
+# Node Farm - a Basic Node.js Practice Project
