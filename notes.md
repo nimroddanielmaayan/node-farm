@@ -101,6 +101,18 @@
 
 - Node is based on "event driven architecture". This means that everything that happens in node is a response to an event, that usually triggers a callback function
 
-- The event loop works in "ticks" or loops. There's a detailed explanation about how a loop happens, in Jonas's slides
+- The event loop works in "ticks" or loops. There's a detailed explanation about how a loop happens, in Jonas's slides. It might sometimes be important to understand it, in some edge cases
 
-- One of the most important things to keep in mind when working with node is that we should never block or slow down the event loop
+- It's also important to understand that the nextTick() functions happens before the next tick PHASE, not before the next new tick\loop
+
+- One of the most important things to keep in mind when working with node is that we should never block or slow down the event loop. On the other hand, setImmediate() happens after the next loop, not immediately. So it's usually better to stick to just one of the two methods, usually to setImmediate()
+
+- Most node methods have a "sync" version, which we'll usually only want to use when we actually DO want our code to block the event loop, for any reason
+
+### Event Driven Architecture
+
+- There are 3 parts to event driven architecture: Event emitters, event listeners, and callback functions. Each one has it's own basic object in node.js
+
+- The emitters emit events, the listeners listen to events and then call the callback functions. Note that each stage might have a one-to-many relationship: One emitter can emit many events, several listeners can listen to the same event, and each listener can call many callback functions
+
+-
