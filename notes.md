@@ -27,6 +27,24 @@
 
 - More info on node version management: https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/
 
+- It's technically possible to use JS\node in order to program many things, like robots, IOT devices, desktop applications, etc. Like many programming languages, it can compiled to the native machine code of different platforms
+
+- A web application's back end is usually built of a server and a database. A server usually has 3 components: An HTTP server, an application and files. More information in Jonas's slides
+
+- Almost all modern web applications are "dynamic". This means that they are generated on the server right before they are sent to the client, according to relevant data
+
+- "True full stack" developers are getting more and more rare today. Usually, developers specialize in either front end or back end, though it's always good to understand both
+
+- The concept of SSR: Server Side Rendering happens, for example, in an online store where not all items are in stock. The server will check the stock, then render the page based on a template, and then send the page to the client
+
+- API based web apps\CSR: Client side rendering. A more recent approach\architecture that's made possible by the high capabilities of modern web browsers and FE frameworks. In this approach, the server only sends data to the client and the client renders the page. This is the approach that we usually use in React (with the exception of Next.js SSR). This approach is based on creating, sending and consuming JSON data rather than sending entire web pages
+
+- It's important for a good back end dev to know how to build both APIs and SSRs
+
+- An important note: If we want to build a server that will supply the same data to different types of clients (like a browser and also a native mobile app), we need to build an API, not an SSR, since only browsers can render HTML
+
+- Some companies\people don't even have a front end, and only build APIs in order to sell access to their data to others. This is called a "headless" approach
+
 ### Command Prompt
 
 - Node REPL: To enter REPL (Read Evaluate Print Loop), go into the terminal and write "node"
@@ -76,3 +94,13 @@
 - The first file that is sent from the server to the client is the index.html file. The browser then parses the HTML file, and if it finds any links to other files, it sends additional requests to the server for those files. This continues until all the files are sent
 
 - In the dev tools "network" tab, we can see all the requests that were sent to the server, and also see who initiated the request
+
+### Node.js - Behind the Scenes
+
+- The heart of node.js is the event loop. But heavy tasks that might block the main thread (like file system actions, compresion etc.) are automatically offloaded to the thread pool, which by default has 4 threads but can be set to a maximum of 128
+
+- Node is based on "event driven architecture". This means that everything that happens in node is a response to an event, that usually triggers a callback function
+
+- The event loop works in "ticks" or loops. There's a detailed explanation about how a loop happens, in Jonas's slides
+
+- One of the most important things to keep in mind when working with node is that we should never block or slow down the event loop
