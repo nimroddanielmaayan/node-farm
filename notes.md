@@ -115,4 +115,54 @@
 
 - The emitters emit events, the listeners listen to events and then call the callback functions. Note that each stage might have a one-to-many relationship: One emitter can emit many events, several listeners can listen to the same event, and each listener can call many callback functions
 
--
+- Because there are no "user events" in the backend (like click events), backend events are either network events (like a new request), or custom events that we create ourselves when something important happens. Note that all backend events (built-in or custom) are instances of the same basic EventEmitter superclass
+
+- Server objects are also instances of the eventEmitter class. This means that we can use the on() and emit() methods on them. Note, that there is no eventListener class in node.js. Instead EventEmitter instances both emit and listen to events. So they are more like event emitters\listeners. In practice, server objects usually really are both event emitters and event listeners
+
+### Streams
+
+- Streams are also instances of the eventEmitter class. As such, they also have the on() and emit() methods, etc
+
+- When sending and receiving large amounts of data, it's better to use streams
+
+- One of the key methods in streams is the pipe() method. It allows us to pipe the output of one stream into the input of another stream, while taking care of a lot of the low level logic behind the scenes
+
+- If we don't pipe data streams, we risk a "backpressure" situation, where the data is coming in faster than it can be processed. This can cause a memory overflow and other problems
+
+### Modules in node
+
+- Node almost always uses the CommonJS module system, which is different from the ES6 module system which is used in React. These two systems are different not just in syntax, but also in how they work (from a sync\async perspective). One exception to this is when working with .mjs files, but that's not very common
+
+- Remember, that when we require\import in JS, we don't require\import a file, but a module (which is usually a complex object)
+
+- Node automatically "wraps" every module in a function, which is called the "module wrapper function", and gives it several built-in objects that include important methods and other things. This is why we can use the require() function in every module(for example), even though we didn't define it anywhere, and even though it's not a built-in function in JS
+
+- Module.exports (or just exports) is an object that is available in every module. It's an empty object by default, but we can add properties to it, and eventually export it
+
+- Because every module in node is actually a function, we can pass arguments to it and also see it's arguments using console.log(arguments)
+
+- When exporting, we don't need to declare "export..." like we do in React. The export object exists by default in every module, including our own modules
+
+- When we create a module in node, we write a file which is then converted into a function. Remember, that a function is itself an object, and can have properties and methods like any object
+
+- Note, that when we use module.exports, we won't export an entire object but just a single value (like a string, a number, an array, etc.)
+
+- The subject of caching in node modules: When we require a module, node will cache it, so that it doesn't have to be reloaded and executed for every require(). It's important to know this becaue it might affect our program
+
+### Async Refresher
+
+- Remember, that a node server application can itself call other servers, and request data via an API. So not only front ends are clients, any server can also be a client
+
+- There are 3 ways to deal with async code in JS: Callbacks, promises, and async\await. Async\await is just promises with syntactic sugar, and it's the best of the three
+
+- Promises are reactive objects that are reactively updated according to the state of the async call. They have 3 possible states: Pending, fulfilled, and rejected
+
+- The way to handle errors in async\await is with try\catch blocks (this is also the default\best practice way to handle errors in JS, in general)
+
+- Behind the scenes, JS uses the Promise constructor to create promises from the Promise class
+
+- When using async\await, it's also important to throw an error if the promise is rejected at any point, so that the catch block will catch it and mark the promise as rejected
+
+- Calling async\await functions: A good way of doing this is to use an IIFE (Immediately Invoked Function Expression). This way, we can call the async function immediately, and also use the await keyword inside the IIFE however we need to. This is a good way of handling async functions that interact with each other
+
+- The Promise.all pattern: This is a good way of handling multiple promises that don't depend on each other, and that we want to run in parallel. Remember though that if one of the promises is rejected, the entire Promise.all will be rejected
