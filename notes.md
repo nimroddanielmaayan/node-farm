@@ -2,9 +2,6 @@
 
 > This project is part of Jonas Schmedtmann's node.js course on Udemy
 
-<!-- Add image later -->
-<!-- <img src="./frontend/public/images/screens.png"> -->
-
 ## Node.js Basics
 
 ### General
@@ -148,6 +145,8 @@
 - Note, that when we use module.exports, we won't export an entire object but just a single value (like a string, a number, an array, etc.)
 
 - The subject of caching in node modules: When we require a module, node will cache it, so that it doesn't have to be reloaded and executed for every require(). It's important to know this becaue it might affect our program
+
+## Async JS
 
 ### Async Refresher
 
