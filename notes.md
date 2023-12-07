@@ -6,11 +6,11 @@
 
 ### General
 
-- Remember, that it's possible to use the \_\_dirname variable to get the current directory, no matter where the file is located. This can sometimes be better than using relative paths (like ../ or ./)
+- Remember, that it's possible to use the dirname variable to get the current directory, no matter where the file is located. This can sometimes be better than using relative paths (like ../ or ./)
 
 - I have to get used to console.logging things to the command line console instead of to the browser console
 
-- In node.js, every file is automatically a module
+- In node, every file can automatically become a module
 
 - The nodemon package - remember to use it in every node project
 
@@ -20,7 +20,7 @@
 
 - A word about version control: NPM package versions look like this: 1.2.3 with the last being bug fixes, the second being minor updates\feature updates, and the first being major version updates. Note, that only major version updates might break our code, and minor updates are always supposed to be backwards compatible. To make sure that we don't get any breaking changes, we can use the ^ symbol before the version number. This is recommended, and it will make sure that we get all the bug fixes and minor updates, but not the major updates. If we want to get all the updates (at our own risk...), we can use the asterix symbol before the version number, or only bug fixes using the ~ symbol (if we want to be extra careful)
 
-- The npm updated command can list all the packages that have updates available
+- The "npm updated" command can list all the packages that have updates available
 
 - More info on node version management: https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/
 
@@ -38,7 +38,7 @@
 
 - It's important for a good back end dev to know how to build both APIs and SSRs
 
-- An important note: If we want to build a server that will supply the same data to different types of clients (like a browser and also a native mobile app), we need to build an API, not an SSR, since only browsers can render HTML
+- An important note: If we want to build a server that will supply the same data to different types of clients (like a browser and also a native mobile app), we need to build an API, not an SSR, since only browsers can recieve and render HTML
 
 - Some companies\people don't even have a front end, and only build APIs in order to sell access to their data to others. This is called a "headless" approach
 
@@ -58,15 +58,13 @@
 
 - Modules in node are similar to modules in frontend
 
-- See later if the require() syntax is the common way for modules, or import
-
 - It's good practice to first import the core modules, then the third party modules, and then our own modules
 
 ### How Node.js Works
 
 - Node uses single thread and uses async code to handle multiple requests and balance the load. This is why there are a lot of callbacks in node.js. On the contrary, other server-side languages like PHP use multi-threading - a separate thread for each request\user
 
-- We will almost always use the async version of the node methods, for example: readFile() instead of readFileSync()
+- We will usually use the async version of the node methods, for example: readFile() instead of readFileSync()
 
 ### The File System Module
 
@@ -76,7 +74,7 @@
 
 - The first method of the http module is the createServer() method. It takes a callback function as it's single argument. This callback function will be called every time a new request hits the server. The callback function takes two arguments: req and res. req is the request object, and res is the response object
 
-- The node application will not end when an http server is created. It will keep running until we explicitly stop it. To stop the server, we can use CTRL+C. In the background, an endless loop is running, listening for incoming requests
+- The node application will never end if an http server is created. It will keep running until we explicitly stop it. To stop the server, we can use CTRL+C. In the background, an endless loop is running and listening for incoming requests
 
 - If possible, it's always better to read data files\template files once, and save them as a variable, outside of the server callback function. This way, the files will be read and stored in the server's memory only once when the server starts, and not every time a request is made
 
@@ -102,25 +100,25 @@
 
 - It's also important to understand that the nextTick() functions happens before the next tick PHASE, not before the next new tick\loop
 
-- One of the most important things to keep in mind when working with node is that we should never block or slow down the event loop. On the other hand, setImmediate() happens after the next loop, not immediately. So it's usually better to stick to just one of the two methods, usually to setImmediate()
+- One of the most important things to keep in mind when working with node is that we should never block or slow down the event loop. On the other hand, setImmediate() happens after the next loop, not immediately. So it's usually better to stick to just one of the two methods (nextTick() or setImmediate()). Usually we'll choose setImmediate()
 
 - Most node methods have a "sync" version, which we'll usually only want to use when we actually DO want our code to block the event loop, for any reason
 
 ### Event Driven Architecture
 
-- There are 3 parts to event driven architecture: Event emitters, event listeners, and callback functions. Each one has it's own basic object in node.js
+- There are 3 parts to event driven architecture: Event emitters, event listeners, and callback functions
 
 - The emitters emit events, the listeners listen to events and then call the callback functions. Note that each stage might have a one-to-many relationship: One emitter can emit many events, several listeners can listen to the same event, and each listener can call many callback functions
 
-- Because there are no "user events" in the backend (like click events), backend events are either network events (like a new request), or custom events that we create ourselves when something important happens. Note that all backend events (built-in or custom) are instances of the same basic EventEmitter superclass
+- Because there are no "user events" in backend (like mouse click events), backend events are either network events (like a new request), or custom events that we create ourselves when something important happens. Note that all backend events (built-in or custom) are emitted by instances of the same basic EventEmitter superclass
 
-- Server objects are also instances of the eventEmitter class. This means that we can use the on() and emit() methods on them. Note, that there is no eventListener class in node.js. Instead EventEmitter instances both emit and listen to events. So they are more like event emitters\listeners. In practice, server objects usually really are both event emitters and event listeners
+- Server objects are also instances of the eventEmitter class. This means that we can use the on() and emit() methods on them. Note, that there is no eventListener class in node.js. Instead EventEmitter instances both emit and listen to events. So they are more like event emitters\listeners. For example, server objects listen to requests and emmit responses
 
 ### Streams
 
 - Streams are also instances of the eventEmitter class. As such, they also have the on() and emit() methods, etc
 
-- When sending and receiving large amounts of data, it's better to use streams
+- When sending and receiving large amounts of data, it's better to use streams, and not to load the entire data into memory
 
 - One of the key methods in streams is the pipe() method. It allows us to pipe the output of one stream into the input of another stream, while taking care of a lot of the low level logic behind the scenes
 
@@ -128,9 +126,9 @@
 
 ### Modules in node
 
-- Node almost always uses the CommonJS module system, which is different from the ES6 module system which is used in React. These two systems are different not just in syntax, but also in how they work (from a sync\async perspective). One exception to this is when working with .mjs files, but that's not very common
+- Node almost always uses the CommonJS module system, which is different from the ES6 module system which is used in React. These two systems are different not just in syntax, but also in how they work (from a sync\async perspective). One exception to this is when working with .mjs files (which use ES6 modules), but they're not very common
 
-- Remember, that when we require\import in JS, we don't require\import a file, but a module (which is usually a complex object)
+- Remember, that when we require\import in JS, we don't require\import a file, but a module (which is a function, and also an object)
 
 - Node automatically "wraps" every module in a function, which is called the "module wrapper function", and gives it several built-in objects that include important methods and other things. This is why we can use the require() function in every module(for example), even though we didn't define it anywhere, and even though it's not a built-in function in JS
 
@@ -138,13 +136,13 @@
 
 - Because every module in node is actually a function, we can pass arguments to it and also see it's arguments using console.log(arguments)
 
-- When exporting, we don't need to declare "export..." like we do in React. The export object exists by default in every module, including our own modules
+- When exporting, we don't need to declare "export..." like we do in React. The export object exists by default in every module, including modules that we create ourselves
 
 - When we create a module in node, we write a file which is then converted into a function. Remember, that a function is itself an object, and can have properties and methods like any object
 
-- Note, that when we use module.exports, we won't export an entire object but just a single value (like a string, a number, an array, etc.)
+- Note, that when we use module.exports, we won't export an entire object but just a single value (like a string, a number, an array, etc.). To export the entire exports object, we need to use just "exports"
 
-- The subject of caching in node modules: When we require a module, node will cache it, so that it doesn't have to be reloaded and executed for every require(). It's important to know this becaue it might affect our program
+- The subject of caching in node modules: When we require a module, node will cache it, so that it doesn't have to be reloaded and executed for every require(). It's important to know this becaue it might affect how our program behaves
 
 ## Async JS
 
@@ -154,11 +152,11 @@
 
 - There are 3 ways to deal with async code in JS: Callbacks, promises, and async\await. Async\await is just promises with syntactic sugar, and it's the best of the three
 
-- Promises are reactive objects that are reactively updated according to the state of the async call. They have 3 possible states: Pending, fulfilled, and rejected
+- Promises are reactive objects that are reactively updated according to the state of their async call. They have 3 possible states: Pending, fulfilled, and rejected
 
 - The way to handle errors in async\await is with try\catch blocks (this is also the default\best practice way to handle errors in JS, in general)
 
-- Behind the scenes, JS uses the Promise constructor to create promises from the Promise class
+- Behind the scenes, JS uses the Promise constructor to create promises from the Promise superclass
 
 - When using async\await, it's also important to throw an error if the promise is rejected at any point, so that the catch block will catch it and mark the promise as rejected
 
